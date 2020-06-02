@@ -31,7 +31,7 @@ const Reservations = require("../models/reservation");
 mongoose.set("useCreateIndex", true);
 
 const uri =
-  "mongodb+srv://Trav:grutikas@bakery-gnzlr.gcp.mongodb.net/test?retryWrites=true&w=majority";
+  "mongodb://localhost:27017/hotel";
 const client = mongoose.createConnection(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -96,33 +96,34 @@ router.post('/uploadevent', upload.single('myEvent'), function (req, res){
     });
   client.close();
 });
-router.get("/edit/:id", (req, res) => {
+router.get("/admin/events/:id", (req, res) => {
   mongoose
   .connect(uri, {useNewUrlParser: true, useUnifiedTopology: true})
   .then(client => {
-     Menus.findById({_id: req.params.id}, (err, docs) => {
+     Events.findById({_id: req.params.id}, (err, docs) => {
        if (err) throw err;
        console.log(docs);
-       res.render("./edit", {docs: docs});
+       res.json(docs);
      });
   })
   client.close();
 })
 
-router.post("/edit/:id", (req, res) => {
+router.post("/admin/events/:id", (req, res) => {
   mongoose
     .connect(uri, {
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
+      useFindAndModify: true
     })
     .then(client => {
-      Menus.findOneAndUpdate(
+      Events.findOneAndUpdate(
         req.params.id,
-        {$set: {description: req.body.description}},
+        {$set: {eventName: req.body.eventName, eventDate: req.body.eventDate, eventDesc: req.body.eventDesc}},
         {new: true},
         (err, doc) => {
           if (err) throw err;
-          res.redirect("/admenu");
+          res.redirect("/admin/dashboard");
         }
       );
     });
@@ -391,6 +392,22 @@ router.get("/admin/blog/:id/delete", (req, res) => {
     })
   client.close();
 });
+router.get("/admin/blog/comments/:id/delete/:otherId", (req, res) => {
+  mongoose
+    .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
+    .then(client => {
+      const Id = { _id: req.params.id };
+      Blogs.updateOne(Id, 
+        { $pull : {comments : { _id: req.params.otherId }}}, {multi: true},
+        (err, data) => {
+          if (err) throw err;
+          console.log(data);
+          res.redirect("/admin/blog")
+        });
+    })
+  client.close();
+});
+router.get("/admin/blog-detail", (req, res) => { res.render("./admin/blog-detail"); });
 router.get("/admin/contact", (req, res) => { 
   mongoose
       .connect(uri, {useNewUrlParser: true, useUnifiedTopology: true})
@@ -414,6 +431,5 @@ router.get("/admin/contact/:id/delete", (req, res) => {
     })
   client.close();
 });
-// router.get("/admin/edit", (req, res) => { res.render("./admin/edit"); });
 
 module.exports = router;
