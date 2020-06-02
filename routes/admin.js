@@ -31,7 +31,7 @@ const Reservations = require("../models/reservation");
 mongoose.set("useCreateIndex", true);
 
 const uri =
-  "mongodb://localhost:27017/hotel";
+  "mongodb+srv://Trav:grutikas@bakery-gnzlr.gcp.mongodb.net/test?retryWrites=true&w=majority";
 const client = mongoose.createConnection(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true
