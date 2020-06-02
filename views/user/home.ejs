@@ -463,8 +463,8 @@
 								<%= blog.blogTitle %>
 							</h4></a>
 
-							<p class="m-b-20" id="truncate">
-								<%= blog.content %>
+							<p class="m-b-20">
+								<%= blog.content.substr(0,150) %><a href="/<%= blog._id%>/blog-detail">...</a>
 							</p>
 
 							<a href="/<%= blog._id%>/blog-detail" class="txt4">

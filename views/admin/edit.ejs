@@ -60,15 +60,15 @@
         <div class="row">
           <div class="col-md-3">
             <div class="list-group">
-              <a href="dashboard" class="list-group-item main-color-bg">
+              <a href="/admin/dashboard" class="list-group-item main-color-bg">
                 <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Dashboard
               </a>
-              <a href="menu" class="list-group-item"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Menu </a>
-              <a href="reservation" class="list-group-item"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Reservation </a>
-              <a href="gallery" class="list-group-item"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Gallery </a>
-              <a href="about" class="list-group-item"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> About </a>
-              <a href="blog" class="list-group-item active"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Blog </a>
-              <a href="contact" class="list-group-item"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Contact </a>
+              <a href="/admin/menu" class="list-group-item"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Menu </a>
+              <a href="/admin/reservation" class="list-group-item"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Reservation </a>
+              <a href="/admin/gallery" class="list-group-item"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Gallery </a>
+              <a href="/admin/about" class="list-group-item"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> About </a>
+              <a href="/admin/blog" class="list-group-item active"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Blog </a>
+              <a href="/admin/contact" class="list-group-item"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Contact </a>
             </div>
 
             <div class="well">
@@ -115,6 +115,16 @@
                     <textarea name="content" class="form-control" placeholder="Page Body">
                       <%= blogs.content %>
                     </textarea>
+                  </div>
+                  <h4><u>Manage Comments</u></h4>
+                  <div class="form-group">
+                  <% for (comment in blogs.comments) { %>
+										<div class="row">
+											<p><%= blogs.comments[comment].comment %></p>
+                      <span><i>~ comment by: <b><%= blogs.comments[comment].username %></i></b></span><br>
+                      <a style="float: right;" href="/admin/blog/comments/<%= blogs._id %>/delete/<%= blogs.comments[comment]._id %>" class="btn btn-danger" href="#">Delete</a>
+										</div><hr>
+                    <% } %>
                   </div>
                   <input type="submit" class="btn btn-success" value="Publish">
                 </form>
